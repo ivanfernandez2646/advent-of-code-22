@@ -25,7 +25,7 @@ export default abstract class Day {
     }
   }
 
-  protected abstract part1(): Promise<any>;
+  protected abstract part1(): any;
 
-  protected abstract part2(): Promise<any>;
+  protected abstract part2(): any;
 }
