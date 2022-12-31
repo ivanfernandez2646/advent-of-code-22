@@ -5,7 +5,6 @@ type Directory = {
   size: number;
 };
 
-// TODO: refactor and clean code
 export default class Day7 extends Day {
   private directories: Directory[] = [];
 
@@ -13,10 +12,10 @@ export default class Day7 extends Day {
     const commands: string[] = this.inputString.split('\n'),
       directoriesSize: Map<string, number> = new Map<string, number>();
 
-    let directoriesStack: string[] = [];
-    let currentDirectoryName: string = directoriesStack
-      .join('/')
-      .replace('//', '/');
+    let directoriesStack: string[] = [],
+      currentDirectoryName: string = directoriesStack
+        .join('/')
+        .replace('//', '/');
 
     commands.forEach((command) => {
       if (command === '$ cd ..') {
@@ -25,6 +24,7 @@ export default class Day7 extends Day {
       } else if (command.startsWith('$ cd')) {
         directoriesStack.push(command.split(' ')[2]);
         currentDirectoryName = directoriesStack.join('/').replace('//', '/');
+
         if (!directoriesSize.has(currentDirectoryName)) {
           directoriesSize.set(currentDirectoryName, 0);
         }
@@ -53,21 +53,21 @@ export default class Day7 extends Day {
         name,
         size,
       })).map((directory, index, arr) => {
-        const innerDirectories = arr.filter(
+        const subDirectories = arr.filter(
           (d) => d.name.startsWith(directory.name) && d.name !== directory.name
         );
 
-        let innerDirectoriesSize: number = 0;
+        let subDirectoriesSize: number = 0;
 
-        if (innerDirectories && innerDirectories.length > 0) {
-          innerDirectoriesSize = innerDirectories
-            .map((iD) => iD.size)
-            .reduce((prev, curr) => prev + curr);
+        if (subDirectories && subDirectories.length > 0) {
+          subDirectoriesSize = subDirectories
+            .map((subDirectory) => subDirectory.size)
+            .reduce((prevSize, currSize) => prevSize + currSize);
         }
 
         return {
           name: directory.name,
-          size: directory.size + innerDirectoriesSize,
+          size: directory.size + subDirectoriesSize,
         };
       })
     );
@@ -78,17 +78,16 @@ export default class Day7 extends Day {
       .reduce((prev, curr) => prev + curr);
   }
 
-  // // TODO: remove duplicated code
-  // part2(): number {
-  //   this.part1();
+  part2(): number {
+    this.part1();
 
-  //   const neededSizeToDeleted = 8381165;
+    const neededSizeToBeDeleted =
+      30000000 -
+      (70000000 - this.directories.find((d) => d.name === '/')!.size);
 
-  //   console.log(this.directories);
-
-  //   return this.directories
-  //     .filter((d) => d.size >= neededSizeToDeleted)
-  //     .sort((a, b) => a.size - b.size)
-  //     .shift()!.size;
-  // }
+    return this.directories
+      .filter((d) => d.size >= neededSizeToBeDeleted)
+      .sort((a, b) => a.size - b.size)
+      .shift()!.size;
+  }
 }

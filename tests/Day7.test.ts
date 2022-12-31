@@ -10,12 +10,12 @@ describe('Day7', () => {
     expect(result).toBe(95437);
   });
 
-  // it('part2', async () => {
-  //   const day7 = new Day7();
+  it('part2', async () => {
+    const day7 = new Day7();
 
-  //   await day7.readInputFile(`${Day7.name}`);
-  //   const result = day7.part2();
+    await day7.readInputFile(`${Day7.name}.example`);
+    const result = day7.part2();
 
-  //   expect(result).toBe(24933642);
-  // });
+    expect(result).toBe(24933642);
+  });
 });
